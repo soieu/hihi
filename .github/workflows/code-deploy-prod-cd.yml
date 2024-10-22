@@ -1,0 +1,44 @@
+name: BATCH CODE-DEPLOY DEV CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  batch-code-deploy-dev:
+    runs-on: ubuntu-latest
+    env:
+      ENV_PATH: .env
+      IMAGE_TAG: latest
+      ZIP_FILE_NAME: test-sandy-app
+      AWS_S3_BUCKET_NAME: photio-ai-code-deploy
+      CODE_DEPLOY_APPLICATION_NAME: test-sandy-app
+      CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: test-sandy-deploy-group
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ vars.AWS_CODE_DEPLOY_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_CODE_DEPLOY_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+
+      - name: Create deployment package
+        run: |
+          zip -r $ZIP_FILE_NAME.zip . -x "*.git*" -x "*node_modules*" -x "*.github*" -x "*__tests__*" -x "*tests*" -x "*.DS_Store"
+
+      - name: Upload to AWS S3
+        run: |
+          aws s3 cp $ZIP_FILE_NAME.zip s3://$AWS_S3_BUCKET_NAME/$ZIP_FILE_NAME.zip
+
+      - name: Deploy to AWS EC2 from S3
+        run: |
+          aws deploy create-deployment \
+            --application-name $CODE_DEPLOY_APPLICATION_NAME \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --deployment-group-name $CODE_DEPLOY_DEPLOYMENT_GROUP_NAME \
+            --s3-location bucket=$AWS_S3_BUCKET_NAME,key=$ZIP_FILE_NAME.zip,bundleType=zip

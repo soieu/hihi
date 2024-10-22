@@ -1,0 +1,27 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /
+    destination: /home/ubuntu/deploy-test
+    runas: ubuntu
+    overwrite: yes
+
+file_exists_behavior: OVERWRITE
+
+permissions:
+  - object: /
+    pattern: '**'
+    mode: '755'
+    owner: ubuntu
+    group: ubuntu
+
+hooks:
+  AfterInstall:
+    - location: code-deploy/stop.sh
+      timeout: 60
+      runas: ubuntu
+  ApplicationStart:
+    - location: code-deploy/start.sh
+      timeout: 600
+      runas: ubuntu
