@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 sudo -u ubuntu -i <<'EOF'
-cd /home/ubuntu/photio-remix
+cd /home/ubuntu/hihi
 PROJECT_ROOT="/home/ubuntu/instance_test"
 APP_LOG="$PROJECT_ROOT/application.log"
 ERROR_LOG="$PROJECT_ROOT/error.log"

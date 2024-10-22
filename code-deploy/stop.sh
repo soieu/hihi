@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PROJECT_ROOT="/home/ubuntu/photio-remix"
+PROJECT_ROOT="/home/ubuntu/hihi"
 
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
 KILL_LOG="$PROJECT_ROOT/kill.log"
