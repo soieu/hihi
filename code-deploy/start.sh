@@ -2,7 +2,7 @@
 
 sudo -u ubuntu -i <<'EOF'
 cd /home/ubuntu/hihi
-PROJECT_ROOT="/home/ubuntu/instance_test"
+PROJECT_ROOT="/home/ubuntu/hihi"
 APP_LOG="$PROJECT_ROOT/application.log"
 ERROR_LOG="$PROJECT_ROOT/error.log"
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
