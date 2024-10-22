@@ -8,8 +8,7 @@ app = FastAPI()
 
 @app.get("/ping")
 def ping():
-    global first_run_flag
-    status_code = 201 if first_run_flag else 200
+    status_code = 201
     return Response("pong", status_code=status_code)
 
 
